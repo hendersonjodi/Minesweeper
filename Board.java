@@ -79,18 +79,134 @@ public class Board extends JFrame implements ActionListener{
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(newGame)){
-			// reset game
-		}
-		else{
-			for(int x = 0; x<ROW;x++){
+			for(int x = 0; x<ROW;x++)
 				for(int y =0 ; y<COLUMN;y++){
-					if (e.getSource().equals(button[x][y])){
+					button[x][y].setEnabled(true);
+					button[x][y].setText("");
+				}
+			createMines();
+
+		}else{
+			for(int x = 0; x<ROW;x++)
+				for(int y =0 ; y<COLUMN;y++)
+					if (e.getSource().equals(button[x][y]))
+						if (mines[x][y]== MINE){
+							button[x][y].setText("X");
+							showMines();
+						}else if (mines[x][y] == 0){
+							ArrayList<Integer> needsCleared = new ArrayList<Integer>();
+							button[x][y].setText(mines[x][y]+"");
+							button[x][y].setEnabled(false);
+							needsCleared.add((x*100)+y);
+							clearZeros(needsCleared);
+
+						}else{
+							button[x][y].setText(mines[x][y]+"");
+							button[x][y].setEnabled(false);
+						}
+		}
+	}
+
+	public void clearZeros(ArrayList<Integer> needsCleared){
+		if(needsCleared.size() == 0)
+			return;
+		else{
+			int x = needsCleared.get(0)/100;
+			int y = needsCleared.get(0)%100;
+			needsCleared.remove(0);
+
+			//UP
+			if(y>0 && button[x][y-1].isEnabled()){
+				button[x][y-1].setText(mines[x][y-1]+"");
+				button[x][y-1].setEnabled(false);
+				if(mines[x][y-1]==0)
+					needsCleared.add((x*100)+(y-1));
+			}
+
+			//DOWN
+			if(y<(ROW-1) && button[x][y+1].isEnabled()){
+				button[x][y+1].setText(mines[x][y+1]+"");
+				button[x][y+1].setEnabled(false);
+				if(mines[x][y+1]==0)
+					needsCleared.add((x*100)+(y+1));
+
+			}	
+
+			//UP RIGHT
+			if(x<(COLUMN-1) && y > 0 && button[x+1][y-1].isEnabled()){
+				button[x+1][y-1].setText(mines[x+1][y-1]+"");
+				button[x+1][y-1].setEnabled(false);
+				if(mines[x+1][y-1]==0)
+					needsCleared.add((x+1)*100+(y-1));
+			}
+
+			//RIGHT
+			if(x<(COLUMN-1)&& button[x+1][y].isEnabled()){
+				button[x+1][y].setText(mines[x+1][y]+"");
+				button[x+1][y].setEnabled(false);
+				if(mines[x+1][y]==0)
+					needsCleared.add(((x+1)*100)+y);
+
+			}
+
+			//DOWN RIGHT
+			if(x<(COLUMN-1) && y<(ROW-1) && button[x+1][y+1].isEnabled()){
+				button[x+1][y+1].setText(mines[x+1][y+1]+"");
+				button[x+1][y+1].setEnabled(false);
+				if(mines[x+1][y+1]==0)
+					needsCleared.add((x+1)*100+(y+1));
+
+			}
+
+			//UP LEFT
+			if(x>0 && y>0 && button[x-1][y-1].isEnabled()){
+				button[x-1][y-1].setText(mines[x-1][y-1]+"");
+				button[x-1][y-1].setEnabled(false);
+				if(mines[x-1][y-1]==0)
+					needsCleared.add((x-1)*100+(y-1));
+
+			}
+
+			//LEFT
+			if(x>0 && button[x-1][y].isEnabled()){
+				button[x-1][y].setText(mines[x-1][y]+"");
+				button[x-1][y].setEnabled(false);
+				if(mines[x-1][y]==0)
+					needsCleared.add(((x-1)*100)+y);
+
+			}
+
+			//DOWN LEFT
+			if(x>0 && y<(ROW-1) && button[x-1][y+1].isEnabled()){
+				button[x-1][y+1].setText(mines[x-1][y+1]+"");
+				button[x-1][y+1].setEnabled(false);
+				if(mines[x-1][y+1]==0)
+					needsCleared.add((x-1)*100+(y+1));
+
+			}
+		}
+		clearZeros(needsCleared);
+	}
+
+	private void showMines() {
+
+		for(int x = 0; x<ROW;x++){
+			for(int y =0 ; y<COLUMN;y++){
+				if(button[x][y].isEnabled()){
+					if (mines[x][y]!=MINE){
 						button[x][y].setText(mines[x][y]+"");
+						button[x][y].setEnabled(false);
+					}else{
+						button[x][y].setText("X");
+						button[x][y].setEnabled(false);
 					}
+
 				}
 			}
 		}
 	}
+
+
 
 	public void createMines(){
 		//Initialise list of random pairs
