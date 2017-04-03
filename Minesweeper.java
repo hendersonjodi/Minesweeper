@@ -33,8 +33,6 @@ public class Board extends JFrame implements ActionListener{
 		setTitle("Minesweeper");
 		setSize(600,400);
 
-
-
 		panel = new JPanel();
 		panel.setLayout(new GridLayout(1,3));
 		panel.setVisible(true);
@@ -77,6 +75,9 @@ public class Board extends JFrame implements ActionListener{
 		validate();
 	}
 
+	/**
+	 * What happens when a button is clicked
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(newGame)){
 			for(int x = 0; x<ROW;x++)
@@ -106,7 +107,10 @@ public class Board extends JFrame implements ActionListener{
 						}
 		}
 	}
-
+	/**
+	 * Checks surrounding buttons and if they are also a zero it clears them
+	 * @param needsCleared
+	 */
 	public void clearZeros(ArrayList<Integer> needsCleared){
 		if(needsCleared.size() == 0)
 			return;
@@ -187,12 +191,14 @@ public class Board extends JFrame implements ActionListener{
 		}
 		clearZeros(needsCleared);
 	}
-
+	/**
+	 * Shows mine or number of neighbour mines
+	 */
 	private void showMines() {
 
-		for(int x = 0; x<ROW;x++){
-			for(int y =0 ; y<COLUMN;y++){
-				if(button[x][y].isEnabled()){
+		for(int x = 0; x<ROW;x++)
+			for(int y =0 ; y<COLUMN;y++)
+				if(button[x][y].isEnabled())
 					if (mines[x][y]!=MINE){
 						button[x][y].setText(mines[x][y]+"");
 						button[x][y].setEnabled(false);
@@ -200,14 +206,10 @@ public class Board extends JFrame implements ActionListener{
 						button[x][y].setText("X");
 						button[x][y].setEnabled(false);
 					}
-
-				}
-			}
-		}
 	}
-
-
-
+	/**
+	 * Randomly creates and positions mines in the grid
+	 */
 	public void createMines(){
 		//Initialise list of random pairs
 		ArrayList<Integer> list = new ArrayList<Integer>();
@@ -226,8 +228,8 @@ public class Board extends JFrame implements ActionListener{
 		}
 
 
-		for(int x = 0; x<ROW; x++){
-			for(int y =0; y<COLUMN; y++){
+		for(int x = 0; x<ROW; x++)
+			for(int y =0; y<COLUMN; y++)
 				if(mines[x][y]!=MINE){
 					int neighbourMines = 0;
 					//UP
@@ -256,8 +258,6 @@ public class Board extends JFrame implements ActionListener{
 						neighbourMines++;
 					mines[x][y] = neighbourMines;
 				}
-			}
-		}
 	}
 
 	public static void main(String[] args) {
