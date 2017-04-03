@@ -79,18 +79,46 @@ public class Board extends JFrame implements ActionListener{
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(newGame)){
-			// reset game
-		}
-		else{
-			for(int x = 0; x<ROW;x++){
+			for(int x = 0; x<ROW;x++)
 				for(int y =0 ; y<COLUMN;y++){
-					if (e.getSource().equals(button[x][y])){
+					button[x][y].setEnabled(true);
+					button[x][y].setText("");
+				}
+			
+			createMines();
+		}else{
+			for(int x = 0; x<ROW;x++)
+				for(int y =0 ; y<COLUMN;y++)
+					if (e.getSource().equals(button[x][y]))
+						if (mines[x][y]== MINE){
+							button[x][y].setText("X");
+							showMines();
+						}else{
+							button[x][y].setText(mines[x][y]+"");
+							button[x][y].setEnabled(false);
+						}
+		}
+	}
+
+	private void showMines() {
+
+		for(int x = 0; x<ROW;x++){
+			for(int y =0 ; y<COLUMN;y++){
+				if(button[x][y].isEnabled()){
+					if (mines[x][y]!=MINE){
 						button[x][y].setText(mines[x][y]+"");
+						button[x][y].setEnabled(false);
+					}else{
+						button[x][y].setText("X");
+						button[x][y].setEnabled(false);
 					}
+
 				}
 			}
 		}
 	}
+
+
 
 	public void createMines(){
 		//Initialise list of random pairs
