@@ -95,8 +95,8 @@ public class Board extends JFrame implements ActionListener{
 	public void createMines(){
 		//Initialise list of random pairs
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		for(int x = 0; x<ROW;x++)
-			for(int y =0 ; y<COLUMN;y++)
+		for(int x = 0; x<ROW; x++)
+			for(int y =0 ; y<COLUMN; y++)
 				// 1223 12 is x 23 is y
 				list.add(x*100+y);
 
@@ -109,24 +109,25 @@ public class Board extends JFrame implements ActionListener{
 			list.remove(position);
 		}
 
-	/*int neighbourMines = 0;
-		for(int x = 0; x<ROW;x++){
-			for(int y =0 ; y<COLUMN;y++){
+
+		for(int x = 0; x<ROW; x++){
+			for(int y =0; y<COLUMN; y++){
 				if(mines[x][y]!=MINE){
+					int neighbourMines = 0;
 					//UP
 					if(y > 0 && mines[x][y-1] == MINE)
 						neighbourMines++;
 					//DOWN
-					if(y<ROW-1 && mines[x][y+1] == MINE)
+					if(y<(ROW-1) && mines[x][y+1] == MINE)
 						neighbourMines++;
 					//UP RIGHT
-					if(x<COLUMN-1 && y > 0 && mines [x+1][y-1] == MINE)
+					if(x<(COLUMN-1) && y > 0 && mines [x+1][y-1] == MINE)
 						neighbourMines++;
 					//RIGHT
-					if(x<COLUMN-1 && mines [x+1][y] == MINE)
+					if(x<(COLUMN-1) && mines [x+1][y] == MINE)
 						neighbourMines++;
 					//DOWN RIGHT
-					if(x<COLUMN-1 && y<ROW-1 && mines[x+1][y+1] == MINE)
+					if(x<(COLUMN-1) && y<(ROW-1) && mines[x+1][y+1] == MINE)
 						neighbourMines++;
 					//UPPER LEFT
 					if(x > 0 && y >0 && mines[x-1][y-1] == MINE)
@@ -135,20 +136,12 @@ public class Board extends JFrame implements ActionListener{
 					if(x>0 && mines[x-1][y] == MINE)
 						neighbourMines++;
 					//DOWN LEFT
-					if(x>0 && y<ROW-1 && mines[x-1][y+1] == MINE)
+					if(x>0 && y<(ROW-1) && mines[x-1][y+1] == MINE)
 						neighbourMines++;
 					mines[x][y] = neighbourMines;
 				}
-				
-				for(x = 0; x<ROW;x++){
-					for(y=0 ; y<COLUMN;y++){
-						//if (e.getSource().equals(button[x][y])){
-							button[x][y].setText(mines[x][y]+"");
-						//}
-					}
-				}
-		*/	//}
-		//}
+			}
+		}
 	}
 
 	public static void main(String[] args) {
