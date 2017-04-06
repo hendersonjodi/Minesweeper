@@ -9,14 +9,20 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class Board extends JFrame implements ActionListener{
+/**
+ * @author Jodi Henderson
+ *
+ */
 
-	private static final int MINES = 10;
-	private static final int ROW = 10;
-	private static final int COLUMN = 10;
+public class Minesweeper extends JFrame implements ActionListener{
+
+	private static final int numMines = 10;
+	private static final int row = 10;
+	private static final int column = 10;
 	private static final int MINE = 10;
 
 	int[][] mines;
@@ -26,19 +32,25 @@ public class Board extends JFrame implements ActionListener{
 	private JLabel time;
 	private JLabel flags;
 	private JButton newGame;
-	private Container grid;
+	private Container grid;	
 
-	public Board() {
+	public Minesweeper() {
 
 		setTitle("Minesweeper");
 		setSize(600,400);
+		
+		//numMines = Integer.parseInt(JOptionPane.showInputDialog("How many mines would you like? "));
+		//row = Integer.parseInt(JOptionPane.showInputDialog("How many rows would you like? "));
+		//column = Integer.parseInt(JOptionPane.showInputDialog("How many columns would you like? "));
 
+
+		
 		panel = new JPanel();
 		panel.setLayout(new GridLayout(1,3));
 		panel.setVisible(true);
 
 		grid = new Container();
-		grid.setLayout(new GridLayout(ROW,COLUMN));
+		grid.setLayout(new GridLayout(row,column));
 		grid.setVisible(true);
 
 		time = new JLabel("Time",SwingConstants.CENTER);
@@ -53,15 +65,15 @@ public class Board extends JFrame implements ActionListener{
 		newGame.addActionListener(this);
 		newGame.setVisible(true);
 
-		button = new JButton[ROW][COLUMN];
-		mines = new int[ROW][COLUMN];
+		button = new JButton[row][column];
+		mines = new int[row][column];
 
 		panel.add(flags);
 		panel.add(newGame);
 		panel.add(time);
 
-		for(int i = 0; i<ROW; i++)
-			for(int j = 0; j<COLUMN; j++){
+		for(int i = 0; i<row; i++)
+			for(int j = 0; j<column; j++){
 				button[i][j]= new JButton();
 				button[i][j].addActionListener(this);
 				grid.add(button[i][j]);
@@ -74,22 +86,21 @@ public class Board extends JFrame implements ActionListener{
 		setVisible(true);
 		validate();
 	}
-
 	/**
 	 * What happens when a button is clicked
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(newGame)){
-			for(int x = 0; x<ROW;x++)
-				for(int y =0 ; y<COLUMN;y++){
+			for(int x = 0; x<row;x++)
+				for(int y =0 ; y<column;y++){
 					button[x][y].setEnabled(true);
 					button[x][y].setText("");
 				}
 			createMines();
 
 		}else{
-			for(int x = 0; x<ROW;x++)
-				for(int y =0 ; y<COLUMN;y++)
+			for(int x = 0; x<row;x++)
+				for(int y =0 ; y<column;y++)
 					if (e.getSource().equals(button[x][y]))
 						if (mines[x][y]== MINE){
 							button[x][y].setText("X");
@@ -100,10 +111,12 @@ public class Board extends JFrame implements ActionListener{
 							button[x][y].setEnabled(false);
 							needsCleared.add((x*100)+y);
 							clearZeros(needsCleared);
+							checkWin();
 
 						}else{
 							button[x][y].setText(mines[x][y]+"");
 							button[x][y].setEnabled(false);
+							checkWin();
 						}
 		}
 	}
@@ -128,7 +141,7 @@ public class Board extends JFrame implements ActionListener{
 			}
 
 			//DOWN
-			if(y<(ROW-1) && button[x][y+1].isEnabled()){
+			if(y<(row-1) && button[x][y+1].isEnabled()){
 				button[x][y+1].setText(mines[x][y+1]+"");
 				button[x][y+1].setEnabled(false);
 				if(mines[x][y+1]==0)
@@ -137,7 +150,7 @@ public class Board extends JFrame implements ActionListener{
 			}	
 
 			//UP RIGHT
-			if(x<(COLUMN-1) && y > 0 && button[x+1][y-1].isEnabled()){
+			if(x<(column-1) && y > 0 && button[x+1][y-1].isEnabled()){
 				button[x+1][y-1].setText(mines[x+1][y-1]+"");
 				button[x+1][y-1].setEnabled(false);
 				if(mines[x+1][y-1]==0)
@@ -145,7 +158,7 @@ public class Board extends JFrame implements ActionListener{
 			}
 
 			//RIGHT
-			if(x<(COLUMN-1)&& button[x+1][y].isEnabled()){
+			if(x<(column-1)&& button[x+1][y].isEnabled()){
 				button[x+1][y].setText(mines[x+1][y]+"");
 				button[x+1][y].setEnabled(false);
 				if(mines[x+1][y]==0)
@@ -154,7 +167,7 @@ public class Board extends JFrame implements ActionListener{
 			}
 
 			//DOWN RIGHT
-			if(x<(COLUMN-1) && y<(ROW-1) && button[x+1][y+1].isEnabled()){
+			if(x<(column-1) && y<(row-1) && button[x+1][y+1].isEnabled()){
 				button[x+1][y+1].setText(mines[x+1][y+1]+"");
 				button[x+1][y+1].setEnabled(false);
 				if(mines[x+1][y+1]==0)
@@ -181,7 +194,7 @@ public class Board extends JFrame implements ActionListener{
 			}
 
 			//DOWN LEFT
-			if(x>0 && y<(ROW-1) && button[x-1][y+1].isEnabled()){
+			if(x>0 && y<(row-1) && button[x-1][y+1].isEnabled()){
 				button[x-1][y+1].setText(mines[x-1][y+1]+"");
 				button[x-1][y+1].setEnabled(false);
 				if(mines[x-1][y+1]==0)
@@ -195,9 +208,8 @@ public class Board extends JFrame implements ActionListener{
 	 * Shows mine or number of neighbour mines
 	 */
 	private void showMines() {
-
-		for(int x = 0; x<ROW;x++)
-			for(int y =0 ; y<COLUMN;y++)
+		for(int x = 0; x<row; x++)
+			for(int y =0 ; y<column; y++)
 				if(button[x][y].isEnabled())
 					if (mines[x][y]!=MINE){
 						button[x][y].setText(mines[x][y]+"");
@@ -205,47 +217,50 @@ public class Board extends JFrame implements ActionListener{
 					}else{
 						button[x][y].setText("X");
 						button[x][y].setEnabled(false);
-					}
+					}	
+		JOptionPane.showMessageDialog(this, "You Lost. Better Luck Next Time");
 	}
+
+
 	/**
 	 * Randomly creates and positions mines in the grid
 	 */
 	public void createMines(){
 		//Initialise list of random pairs
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		for(int x = 0; x<ROW; x++)
-			for(int y =0 ; y<COLUMN; y++)
+		for(int x = 0; x<row; x++)
+			for(int y =0 ; y<column; y++)
 				// 1223 12 is x 23 is y
 				list.add(x*100+y);
 
 
 		//Reset mine array and add MINES new mines in random positions
-		mines = new int [ROW][COLUMN];
-		for (int i = 0; i<MINES; i++){
+		mines = new int [row][column];
+		for (int i = 0; i<numMines; i++){
 			int position = (int)(Math.random()*list.size());
 			mines[list.get(position) / 100][list.get(position) % 100]=MINE;
 			list.remove(position);
 		}
 
 
-		for(int x = 0; x<ROW; x++)
-			for(int y =0; y<COLUMN; y++)
+		for(int x = 0; x<row; x++)
+			for(int y =0; y<column; y++)
 				if(mines[x][y]!=MINE){
 					int neighbourMines = 0;
 					//UP
 					if(y > 0 && mines[x][y-1] == MINE)
 						neighbourMines++;
 					//DOWN
-					if(y<(ROW-1) && mines[x][y+1] == MINE)
+					if(y<(row-1) && mines[x][y+1] == MINE)
 						neighbourMines++;
 					//UP RIGHT
-					if(x<(COLUMN-1) && y > 0 && mines [x+1][y-1] == MINE)
+					if(x<(column-1) && y > 0 && mines [x+1][y-1] == MINE)
 						neighbourMines++;
 					//RIGHT
-					if(x<(COLUMN-1) && mines [x+1][y] == MINE)
+					if(x<(column-1) && mines [x+1][y] == MINE)
 						neighbourMines++;
 					//DOWN RIGHT
-					if(x<(COLUMN-1) && y<(ROW-1) && mines[x+1][y+1] == MINE)
+					if(x<(column-1) && y<(row-1) && mines[x+1][y+1] == MINE)
 						neighbourMines++;
 					//UPPER LEFT
 					if(x > 0 && y >0 && mines[x-1][y-1] == MINE)
@@ -254,15 +269,28 @@ public class Board extends JFrame implements ActionListener{
 					if(x>0 && mines[x-1][y] == MINE)
 						neighbourMines++;
 					//DOWN LEFT
-					if(x>0 && y<(ROW-1) && mines[x-1][y+1] == MINE)
+					if(x>0 && y<(row-1) && mines[x-1][y+1] == MINE)
 						neighbourMines++;
 					mines[x][y] = neighbourMines;
 				}
 	}
+	
+	public void checkWin(){
+		boolean win = true;
+		for(int x = 0; x<row; x++)
+			for(int y =0 ; y<column; y++)
+				if(mines[x][y] != MINE && button[x][y].isEnabled())
+					win = false;
+		if(win)
+			JOptionPane.showMessageDialog(this, "Congratulations! You've Won!");
+		
+		 
+		
+		
+	}
 
 	public static void main(String[] args) {
-		new Board();
-
+		new Minesweeper();
 	}
 
 }
