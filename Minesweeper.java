@@ -119,7 +119,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 							showMines();
 						}else if (mines[x][y] == 0){
 							ArrayList<Integer> needsCleared = new ArrayList<Integer>();
-							if(mines[x][y]!=0)//&& !button[x][y].getText().equals("*"))
+							if(mines[x][y]!=0)
 								button[x][y].setText(mines[x][y]+"");
 
 							button[x][y].setEnabled(false);
@@ -128,8 +128,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 							checkWin();
 
 						}else{
-							//if(!button[x][y].getText().equals("*"))
-								button[x][y].setText(mines[x][y]+"");
+							button[x][y].setText(mines[x][y]+"");
 							button[x][y].setEnabled(false);
 							checkWin();
 						}
