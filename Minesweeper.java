@@ -96,7 +96,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 		validate();
 	}
 	/**
-	 * What happens when a button is clicked
+	 * Left clicking new game or any tile on grid
 	 */
 	public void actionPerformed(ActionEvent e) {
 
@@ -119,7 +119,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 							showMines();
 						}else if (mines[x][y] == 0){
 							ArrayList<Integer> needsCleared = new ArrayList<Integer>();
-							if(mines[x][y]!=0)
+							if(mines[x][y]!=0)//&& !button[x][y].getText().equals("*"))
 								button[x][y].setText(mines[x][y]+"");
 
 							button[x][y].setEnabled(false);
@@ -128,7 +128,8 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 							checkWin();
 
 						}else{
-							button[x][y].setText(mines[x][y]+"");
+							//if(!button[x][y].getText().equals("*"))
+								button[x][y].setText(mines[x][y]+"");
 							button[x][y].setEnabled(false);
 							checkWin();
 						}
@@ -136,16 +137,19 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 		allZeros();
 
 	}
-
+	/**
+	 * Right click for flags
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO When i left click after * vanishes
 		if (SwingUtilities.isRightMouseButton(e))
 			for(int x = 0; x<row;x++)
 				for(int y =0 ; y<column;y++)
 					if(e.getSource().equals(button[x][y])){
 						button[x][y].setText("*");
 						numFlags--;
+						if(numFlags <= -1)
+							JOptionPane.showMessageDialog(this, "More Flags than mines");
 						flags.setText(numFlags+"");
 					}
 	}     
@@ -322,7 +326,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 	private void allZeros(){
 		for(int x = 0; x<row; x++)
 			for(int y =0 ; y<column; y++)
-				if(mines[x][y] == 0)
+				if(mines[x][y] == 0 && !button[x][y].getText().equals("*"))
 					button[x][y].setText("");
 
 	}
