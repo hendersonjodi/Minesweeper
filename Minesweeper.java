@@ -25,7 +25,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 
 	private static int numMines,row,column,numFlags; 
 	private static final int MINE = 10;
-	private int seconds = 0;
+	private int seconds;
 
 	private int[][] mines;
 
@@ -42,7 +42,8 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 
 		setTitle("Minesweeper");
 		setSize(600,400);
-
+		
+		seconds = 0;
 		numMines = Integer.parseInt(JOptionPane.showInputDialog("How many mines would you like? "));
 		row = Integer.parseInt(JOptionPane.showInputDialog("How many rows would you like? "));
 		column = Integer.parseInt(JOptionPane.showInputDialog("How many columns would you like? "));
