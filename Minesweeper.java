@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 /**
  * @author Jodi Henderson
@@ -25,14 +25,18 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 
 	private static int numMines,row,column,numFlags; 
 	private static final int MINE = 10;
+	private int seconds = 0;
 
-	int[][] mines;
+	private int[][] mines;
 
 	private JPanel panel;
 	private JButton[][] button;
-	private JLabel time,flags;
+	private static JLabel time;
+	private JLabel flags;
 	private JButton newGame;
 	private Container grid;	
+	private Timer timer;
+	
 
 	public Minesweeper() {
 
@@ -52,6 +56,10 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 		}
 		numFlags = numMines;
 		
+		timer = new Timer(1000, this);
+		timer.setInitialDelay(1000);
+		
+		
 		panel = new JPanel();
 		panel.setLayout(new GridLayout(1,3));
 		panel.setVisible(true);
@@ -60,7 +68,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 		grid.setLayout(new GridLayout(row,column));
 		grid.setVisible(true);
 
-		time = new JLabel("Time",SwingConstants.CENTER);
+		time = new JLabel(seconds+"",SwingConstants.CENTER);
 		time.setBackground(Color.LIGHT_GRAY);
 		time.setVisible(true);
 
@@ -99,8 +107,10 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 	 * Left clicking new game or any tile on grid
 	 */
 	public void actionPerformed(ActionEvent e) {
-
+		seconds++;
+		time.setText(seconds+"");
 		if (e.getSource().equals(newGame)){
+			timer.stop();
 			for(int x = 0; x<row;x++)
 				for(int y =0 ; y<column;y++){
 					button[x][y].setEnabled(true);
@@ -109,7 +119,10 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 			numFlags = numMines;
 			flags.setText(numFlags+"");
 			createMines();
+			seconds = 0;
+			time.setText(seconds+"");
 		}else{
+			timer.start(); 
 			for(int x = 0; x<row;x++)
 				for(int y =0 ; y<column;y++)
 
@@ -128,6 +141,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 							checkWin();
 
 						}else{
+							
 							button[x][y].setText(mines[x][y]+"");
 							button[x][y].setEnabled(false);
 							checkWin();
@@ -253,6 +267,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 						button[x][y].setEnabled(false);
 					}	
 		allZeros();
+		timer.stop();
 		JOptionPane.showMessageDialog(this, "You Lose. Better Luck Next Time");
 	}
 
@@ -261,6 +276,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 	 * Randomly creates and positions mines in the grid
 	 */
 	private void createMines(){
+		
 		//Initialise list of random pairs
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		for(int x = 0; x<row; x++)
@@ -318,6 +334,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 					win = false;
 		if(win){
 			allZeros();
+			timer.stop();
 			JOptionPane.showMessageDialog(this, "Congratulations! You've Won!");
 		}
 	}
@@ -329,22 +346,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 					button[x][y].setText("");
 
 	}
-	/*
-	private void pause(long millisecs){  
-		long current = Calendar.getInstance().getTimeInMillis();
-	    while(Calendar.getInstance().getTimeInMillis()-current<millisecs);
-	}
 
-	//TODO runs forever
-	private void timer(){
-		int seconds = 0;
-		while(true){  	
-			time.setText(seconds+"");
-			pause(1000);
-			seconds++;
-		}
-	}
-	 */
 
 
 	public static void main(String[] args) {
