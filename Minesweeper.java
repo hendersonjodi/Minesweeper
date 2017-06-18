@@ -23,10 +23,8 @@ import javax.swing.Timer;
 
 public class Minesweeper extends JFrame implements ActionListener, MouseListener{
 
-	private static int numMines,row,column,numFlags; 
-	private static final int MINE = 10;
-	private int seconds;
-
+	private int numMines,row,column,numFlags,seconds; 
+	private final int MINE = 10;
 	private int[][] mines;
 
 	private JPanel panel;
