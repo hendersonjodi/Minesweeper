@@ -25,6 +25,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 
 	private int numMines,row,column,numFlags,seconds; 
 	private final int MINE = 10;
+
 	private int[][] mines;
 
 	private JPanel panel;
@@ -40,7 +41,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 
 		setTitle("Minesweeper");
 		setSize(600,400);
-		
+
 		seconds = 0;
 		numMines = Integer.parseInt(JOptionPane.showInputDialog("How many mines would you like? "));
 		row = Integer.parseInt(JOptionPane.showInputDialog("How many rows would you like? "));
@@ -67,11 +68,11 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 		grid.setLayout(new GridLayout(row,column));
 		grid.setVisible(true);
 
-		time = new JLabel(seconds+"",SwingConstants.CENTER);
+		time = new JLabel("Time: " + seconds,SwingConstants.CENTER);
 		time.setBackground(Color.LIGHT_GRAY);
 		time.setVisible(true);
 
-		flags = new JLabel(numFlags+"",SwingConstants.CENTER);
+		flags = new JLabel("Flags: " + numFlags,SwingConstants.CENTER);
 		flags.setBackground(Color.LIGHT_GRAY);
 		flags.setVisible(true);
 
@@ -107,7 +108,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 	 */
 	public void actionPerformed(ActionEvent e) {
 		seconds++;
-		time.setText(seconds+"");
+		time.setText("Time: " + seconds);
 		if (e.getSource().equals(newGame)){
 			timer.stop();
 			for(int x = 0; x<row;x++)
@@ -116,10 +117,12 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 					button[x][y].setText("");
 				}
 			numFlags = numMines;
-			flags.setText(numFlags+"");
-			createMines();
+			flags.setText("Flags: " + numFlags);
 			seconds = 0;
-			time.setText(seconds+"");
+			time.setText("Time: " + seconds);
+			
+			createMines();
+			
 		}else{
 			timer.start(); 
 			for(int x = 0; x<row;x++)
@@ -162,7 +165,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 						numFlags--;
 						if(numFlags <= -1)
 							JOptionPane.showMessageDialog(this, "More Flags than mines");
-						flags.setText(numFlags+"");
+						flags.setText("Flags: " + numFlags);
 					}
 	}     
 
