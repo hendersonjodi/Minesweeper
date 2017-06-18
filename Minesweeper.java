@@ -25,18 +25,14 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 
 	private int numMines,row,column,numFlags,seconds; 
 	private final int MINE = 10;
-
 	private int[][] mines;
-
 	private JPanel panel;
 	private JButton[][] button;
-	private static JLabel time;
-	private JLabel flags;
+	private JLabel flags,time;
 	private JButton newGame;
 	private Container grid;	
 	private Timer timer;
 	
-
 	public Minesweeper() {
 
 		setTitle("Minesweeper");
@@ -47,18 +43,17 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 		row = Integer.parseInt(JOptionPane.showInputDialog("How many rows would you like? "));
 		column = Integer.parseInt(JOptionPane.showInputDialog("How many columns would you like? "));
 		
-
 		while(numMines>(row*column)){
 			JOptionPane.showMessageDialog(this, "More mines than buttons please enter again");
 			numMines = Integer.parseInt(JOptionPane.showInputDialog("How many mines would you like? "));
 			row = Integer.parseInt(JOptionPane.showInputDialog("How many rows would you like? "));
 			column = Integer.parseInt(JOptionPane.showInputDialog("How many columns would you like? "));	
 		}
+		
 		numFlags = numMines;
 		
 		timer = new Timer(1000, this);
 		timer.setInitialDelay(1000);
-		
 		
 		panel = new JPanel();
 		panel.setLayout(new GridLayout(1,3));
@@ -103,6 +98,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 		setVisible(true);
 		validate();
 	}
+	
 	/**
 	 * Left clicking new game or any tile on grid
 	 */
@@ -152,6 +148,7 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 		allZeros();
 
 	}
+	
 	/**
 	 * Right click for flags
 	 */
@@ -168,7 +165,6 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 						flags.setText("Flags: " + numFlags);
 					}
 	}     
-
 
 	/**
 	 * Checks surrounding buttons and if they are also a zero it clears them
@@ -196,7 +192,6 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 				button[x][y+1].setEnabled(false);
 				if(mines[x][y+1]==0)
 					needsCleared.add((x*100)+(y+1));
-
 			}	
 
 			//UP RIGHT
@@ -213,7 +208,6 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 				button[x+1][y].setEnabled(false);
 				if(mines[x+1][y]==0)
 					needsCleared.add(((x+1)*100)+y);
-
 			}
 
 			//DOWN RIGHT
@@ -222,7 +216,6 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 				button[x+1][y+1].setEnabled(false);
 				if(mines[x+1][y+1]==0)
 					needsCleared.add((x+1)*100+(y+1));
-
 			}
 
 			//UP LEFT
@@ -231,7 +224,6 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 				button[x-1][y-1].setEnabled(false);
 				if(mines[x-1][y-1]==0)
 					needsCleared.add((x-1)*100+(y-1));
-
 			}
 
 			//LEFT
@@ -240,7 +232,6 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 				button[x-1][y].setEnabled(false);
 				if(mines[x-1][y]==0)
 					needsCleared.add(((x-1)*100)+y);
-
 			}
 
 			//DOWN LEFT
@@ -249,7 +240,6 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 				button[x-1][y+1].setEnabled(false);
 				if(mines[x-1][y+1]==0)
 					needsCleared.add((x-1)*100+(y+1));
-
 			}
 		}
 		clearZeros(needsCleared);
@@ -349,13 +339,12 @@ public class Minesweeper extends JFrame implements ActionListener, MouseListener
 
 	}
 
-
-
 	public static void main(String[] args) {
 		new Minesweeper();
 	}
 
-
+	
+	//Error without these methods
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
